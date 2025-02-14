@@ -34,6 +34,24 @@ if redis_available:
                 'created_at': datetime.now().isoformat(),
                 'usage_count': 0
             })
+
+        def get_newly_added_terms(self, limit=10):
+            keys = self.db.keys(self.prefix + '*')
+            terms = []
+            for key in keys:
+                term_data = self.db.hgetall(key)
+                terms.append((key[len(self.prefix):], term_data['created_at']))
+            terms.sort(key=lambda x: x[1], reverse=True)
+            return terms[:limit]
+
+        def get_most_commonly_used_terms(self, limit=10):
+            keys = self.db.keys(self.prefix + '*')
+            terms = []
+            for key in keys:
+                term_data = self.db.hgetall(key)
+                terms.append((key[len(self.prefix):], int(term_data['usage_count'])))
+            terms.sort(key=lambda x: x[1], reverse=True)
+            return terms[:limit]
 else:
     class RedisHandler(DBHandler):
         def init_db(self):

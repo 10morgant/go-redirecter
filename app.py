@@ -13,6 +13,7 @@ class MyApp:
         self.port = port
         self.debug = debug
 
+        self.app.add_url_rule('/go/', 'show_terms', self.show_terms)
         self.app.add_url_rule('/go/<string:term>', 'redirect_to_term', self.redirect_to_term)
         self.app.add_url_rule('/add', 'add_term', self.add_term, methods=['POST'])
 
@@ -21,14 +22,27 @@ class MyApp:
         if url:
             return redirect(url)
         else:
-            pass
-        return render_template("new_entry.j2.html", term=term)
+            return render_template("new_entry.j2.html", term=term)
 
     def add_term(self):
         term = request.form['term']
         url = request.form['url']
         self.db_handler.add_term(term, url)
         return redirect('/go/{}'.format(term))
+
+    def show_terms(self):
+        newly_added_terms = [
+            (term, created_at)
+            for term, created_at in self.db_handler.get_newly_added_terms()
+            if term
+        ]
+        most_commonly_used_terms = [
+            (term, usage_count)
+            for term, usage_count in self.db_handler.get_most_commonly_used_terms()
+            if term
+        ]
+        return render_template("terms.j2.html", newly_added_terms=newly_added_terms,
+                               most_commonly_used_terms=most_commonly_used_terms)
 
     def run(self):
         self.app.run(host=self.host, port=self.port, debug=self.debug)
