@@ -1,0 +1,51 @@
+import argparse
+
+from flask import Flask, redirect, request, render_template
+
+from storage.db_factory import get_db_handler
+
+
+class MyApp:
+    def __init__(self, host, port, debug, db_type, db_path):
+        self.app = Flask(__name__)
+        self.db_handler = get_db_handler(db_type, db_path)
+        self.host = host
+        self.port = port
+        self.debug = debug
+
+        self.app.add_url_rule('/go/<string:term>', 'redirect_to_term', self.redirect_to_term)
+        self.app.add_url_rule('/add', 'add_term', self.add_term, methods=['POST'])
+
+    def redirect_to_term(self, term):
+        url = self.db_handler.get_url(term)
+        if url:
+            return redirect(url)
+        else:
+            pass
+        return render_template("new_entry.j2.html", term=term)
+
+    def add_term(self):
+        term = request.form['term']
+        url = request.form['url']
+        self.db_handler.add_term(term, url)
+        return redirect('/go/{}'.format(term))
+
+    def run(self):
+        self.app.run(host=self.host, port=self.port, debug=self.debug)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Run the Flask app.')
+    parser.add_argument('--host', type=str, default='127.0.0.1', help='Host to run the app on')
+    parser.add_argument('--port', type=int, default=5000, help='Port to run the app on')
+    parser.add_argument('--debug', action='store_true', help='Run the app in debug mode')
+    parser.add_argument('--db-type', type=str, choices=['sqlite', 'json', 'redis'], default='redis',
+                        help='Database type to use')
+    default_db = '/home/tim/Github/personal/url_redirect/terms.json'
+    parser.add_argument('--db-path', type=str, default="redis://localhost:6379/0",
+                        help='Path to the database file')
+
+    args = parser.parse_args()
+
+    my_app = MyApp(args.host, args.port, args.debug, args.db_type, args.db_path)
+    my_app.run()
