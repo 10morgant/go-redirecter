@@ -15,6 +15,7 @@ class MyApp:
 
         self.app.add_url_rule('/go/', 'show_terms', self.show_terms)
         self.app.add_url_rule('/go/<string:term>', 'redirect_to_term', self.redirect_to_term)
+        self.app.add_url_rule('/new', 'new_entry', self.new_entry)
         self.app.add_url_rule('/add', 'add_term', self.add_term, methods=['POST'])
 
     def redirect_to_term(self, term):
@@ -22,7 +23,10 @@ class MyApp:
         if url:
             return redirect(url)
         else:
-            return render_template("new_entry.j2.html", term=term)
+            return self.new_entry(term)
+
+    def new_entry(self, term=None):
+        return render_template("new_entry.j2.html", term=term)
 
     def add_term(self):
         term = request.form['term']

@@ -1,42 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entry Form</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/flowbite.min.css') }}">
-</head>
-<body class="bg-gray-100">
-<nav class="bg-blue-500 p-4 mb-6">
-    <div class="max-w-7xl mx-auto">
-        <a href="/go" class="text-white text-2xl font-bold">GO</a>
-    </div>
-</nav>
-<div class="p-6">
-    <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
-        <div class="bg-red-500 text-white p-4 rounded-lg mb-4">
-            <p>Term "{{ term }}" not found.</p>
-        </div>
-        <h2 class="text-2xl font-bold mb-4">Add New Term</h2>
-        <form action="/add" method="post">
+{% extends "base.j2.html" %}
+
+{% block title %}New Entry{% endblock %}
+
+{% block body %}
+    <div class="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-lg mb-6">
+        {% if term %}
+            <div class="bg-red-500 text-white p-4 rounded-lg mb-4">
+                <p>Term "{{ term }}" not found.</p>
+            </div>
+        {% endif %}
+        <h2 class="text-2xl font-bold mb-4 text-center">Add New Term</h2>
+        <form action="/add" method="post" class="max-w-md mx-auto">
             <div class="mb-4">
-                <label for="term" class="block text-gray-700">Term</label>
-                <input type="text" id="term" name="term"
-                       class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                       value="{{ term }}">
-
-
+                <label for="term" class="block text-sm font-medium text-gray-700">Term</label>
+                <input type="text" name="term" id="term" class="block w-full p-2 border border-gray-300 rounded-lg"
+                       value="{{ term if term else '' }}"
+                       required>
             </div>
             <div class="mb-4">
-                <label for="url" class="block text-gray-700">URL</label>
-                <input type="text" id="url" name="url"
-                       class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <label for="url" class="block text-sm font-medium text-gray-700">URL</label>
+                <input type="url" name="url" id="url" class="block w-full p-2 border border-gray-300 rounded-lg"
+                          value="http://"
+                       required>
             </div>
-            <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Add</button>
+            <button type="submit" class="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-800">Add</button>
         </form>
     </div>
-</div>
-</body>
-<script src="{{ url_for('static', filename='css/flowbite.min.js') }}"></script>
-
-</html>
+{% endblock %}

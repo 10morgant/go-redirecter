@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Terms{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flowbite.min.css') }}">
+</head>
+<body class="bg-gray-100">
+<nav class="bg-blue-500 p-4 mb-6">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="flex space-x-4">
+            <a href="/go" class="text-white text-2xl font-bold">GO</a>
+            <a href="/go" class="text-white text-lg">Home</a>
+        </div>
+        <a href="/new" class="text-white text-lg bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-lg">Add New</a>
+    </div>
+</nav>
+<div class="p-6">
+    {% block body %}{% endblock %}
+</div>
+<script src="{{ url_for('static', filename='css/flowbite.min.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

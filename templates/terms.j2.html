@@ -1,18 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/flowbite.min.css') }}">
-</head>
-<body class="bg-gray-100">
-<nav class="bg-blue-500 p-4 mb-6">
-    <div class="max-w-7xl mx-auto">
-        <a href="/go" class="text-white text-2xl font-bold">GO</a>
-    </div>
-</nav>
-<div class="p-6">
+{% extends "base.j2.html" %}
+
+{% block title %}Terms{% endblock %}
+
+{% block body %}
     <div class="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-lg mb-6">
         <h2 class="text-2xl font-bold mb-4 text-center">Search Term</h2>
         <form id="search-form" class="max-w-md mx-auto">
@@ -53,14 +43,14 @@
             </ul>
         </div>
     </div>
-</div>
-<script src="{{ url_for('static', filename='css/flowbite.min.js') }}"></script>
-<script>
-    document.getElementById('search-form').addEventListener('submit', function (event) {
-        event.preventDefault();
-        const term = document.getElementById('search-term').value;
-        window.location.href = `/go/${term}`;
-    });
-</script>
-</body>
-</html>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        document.getElementById('search-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const term = document.getElementById('search-term').value;
+            window.location.href = `/go/${term}`;
+        });
+    </script>
+{% endblock %}
