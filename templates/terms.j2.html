@@ -28,19 +28,39 @@
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="bg-white p-6 rounded-lg shadow-lg">
             <h2 class="text-xl font-bold mb-4">Newly Added</h2>
-            <ul class="list-disc pl-5">
+            <table class="min-w-full w-full divide-y divide-gray-200">
+                <tbody class="bg-white divide-y divide-gray-200">
                 {% for term, created_at in newly_added_terms %}
-                    <li>{{ term }} <a href="/edit/{{ term }}" class="text-blue-500 hover:underline">Edit</a></li>
+                    <tr class="hover:bg-gray-100">
+                        <td class="px-6 py-4 whitespace-nowrap w-10">{{ loop.index }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ term }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <a href="/edit/{{ term }}" class="text-blue-500 hover:underline hidden">Edit</a>
+                            <a href="/delete/{{ term }}" class="text-red-500 hover:underline hidden">Delete</a>
+                        </td>
+                    </tr>
                 {% endfor %}
-            </ul>
+                </tbody>
+            </table>
         </div>
         <div class="bg-white p-6 rounded-lg shadow-lg">
             <h2 class="text-xl font-bold mb-4">Most Frequent</h2>
-            <ul class="list-disc pl-5">
+            <table class="min-w-full w-full divide-y divide-gray-200">
+                <tbody class="bg-white divide-y divide-gray-200">
                 {% for term, usage_count in most_commonly_used_terms %}
-                    <li>{{ term }} <a href="/edit/{{ term }}" class="text-blue-500 hover:underline">Edit</a></li>
+                    <tr class="hover:bg-gray-100">
+                        <td class="px-6 py-4 whitespace-nowrap w-10">{{ loop.index }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                                {{ term }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <a href="/edit/{{ term }}" class="text-blue-500 hover:underline hidden">Edit</a>
+                            <a href="/delete/{{ term }}" class="text-red-500 hover:underline hidden">Delete</a>
+                        </td>
+                    </tr>
                 {% endfor %}
-            </ul>
+                </tbody>
+            </table>
         </div>
     </div>
 {% endblock %}
@@ -51,6 +71,15 @@
             event.preventDefault();
             const term = document.getElementById('search-term').value;
             window.location.href = `/go/${term}`;
+        });
+
+        document.querySelectorAll('tr').forEach(row => {
+            row.addEventListener('mouseover', () => {
+                row.querySelectorAll('a').forEach(link => link.classList.remove('hidden'));
+            });
+            row.addEventListener('mouseout', () => {
+                row.querySelectorAll('a').forEach(link => link.classList.add('hidden'));
+            });
         });
     </script>
 {% endblock %}
