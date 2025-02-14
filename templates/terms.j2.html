@@ -33,7 +33,9 @@
                 {% for term, created_at in newly_added_terms %}
                     <tr class="hover:bg-gray-100">
                         <td class="px-6 py-4 whitespace-nowrap w-10">{{ loop.index }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ term }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <a href="/go/{{ term }}" class="text-blue-500 hover:underline">{{ term }}</a>
+                        </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <a href="/edit/{{ term }}" class="text-blue-500 hover:underline hidden">Edit</a>
                             <a href="/delete/{{ term }}" class="text-red-500 hover:underline hidden">Delete</a>
@@ -51,7 +53,7 @@
                     <tr class="hover:bg-gray-100">
                         <td class="px-6 py-4 whitespace-nowrap w-10">{{ loop.index }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                                {{ term }}
+                            <a href="/go/{{ term }}" class="text-blue-500 hover:underline">{{ term }}</a>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <a href="/edit/{{ term }}" class="text-blue-500 hover:underline hidden">Edit</a>
@@ -75,10 +77,10 @@
 
         document.querySelectorAll('tr').forEach(row => {
             row.addEventListener('mouseover', () => {
-                row.querySelectorAll('a').forEach(link => link.classList.remove('hidden'));
+                row.querySelectorAll('a[href^="/edit/"], a[href^="/delete/"]').forEach(link => link.classList.remove('hidden'));
             });
             row.addEventListener('mouseout', () => {
-                row.querySelectorAll('a').forEach(link => link.classList.add('hidden'));
+                row.querySelectorAll('a[href^="/edit/"], a[href^="/delete/"]').forEach(link => link.classList.add('hidden'));
             });
         });
     </script>
