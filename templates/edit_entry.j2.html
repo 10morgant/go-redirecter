@@ -1,0 +1,25 @@
+{% extends "base.j2.html" %}
+
+{% block title %}Edit Entry{% endblock %}
+
+{% block body %}
+    <div class="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-lg mb-6">
+        <h2 class="text-2xl font-bold mb-4 text-center">Edit Term</h2>
+        <form action="/update" method="post" class="max-w-md mx-auto">
+            <input type="hidden" name="old_term" value="{{ term }}">
+            <div class="mb-4">
+                <label for="term" class="block text-sm font-medium text-gray-700">Term</label>
+                <input type="hidden" name="old_term" id="old_term" class=""
+                       value="{{ term }}" required>
+                <input type="text" name="term" id="term" class="block w-full p-2 border border-gray-300 rounded-lg"
+                       value="{{ term }}" required>
+            </div>
+            <div class="mb-4">
+                <label for="url" class="block text-sm font-medium text-gray-700">URL</label>
+                <input type="url" name="url" id="url" class="block w-full p-2 border border-gray-300 rounded-lg"
+                       value="{{ url }}" required>
+            </div>
+            <button type="submit" class="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-800">Update</button>
+        </form>
+    </div>
+{% endblock %}

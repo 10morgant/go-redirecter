@@ -38,3 +38,11 @@ class SQLiteHandler(DBHandler):
     def get_most_commonly_used_terms(self, limit=10):
         self.cursor.execute('SELECT term, usage_count FROM terms ORDER BY usage_count DESC LIMIT ?', (limit,))
         return self.cursor.fetchall()
+
+    def update_term(self, old_term, new_term, url):
+        self.cursor.execute('UPDATE terms SET term=?, url=? WHERE term=?', (new_term, url, old_term))
+        self.conn.commit()
+
+    def delete_term(self, term):
+        self.cursor.execute('DELETE FROM terms WHERE term=?', (term,))
+        self.conn.commit()

@@ -29,11 +29,21 @@ if redis_available:
 
         def add_term(self, term, url):
             key = self.prefix + term
-            self.db.hmset(key, {
+            self.db.hset(key, mapping={
                 'url': url,
                 'created_at': datetime.now().isoformat(),
                 'usage_count': 0
             })
+
+        def delete_term(self, term):
+            if not self.exists(term):
+                return
+            key = self.prefix + term
+            self.db.delete(key)
+
+        def exists(self, term):
+            key = self.prefix + term
+            return self.db.exists(key)
 
         def get_newly_added_terms(self, limit=10):
             keys = self.db.keys(self.prefix + '*')
@@ -52,8 +62,24 @@ if redis_available:
                 terms.append((key[len(self.prefix):], int(term_data['usage_count'])))
             terms.sort(key=lambda x: x[1], reverse=True)
             return terms[:limit]
+
+        def update_term(self, old_term, new_term, url):
+            self.delete_term(old_term)
+            self.add_term(new_term, url)
 else:
     class RedisHandler(DBHandler):
+        def get_newly_added_terms(self):
+            pass
+
+        def get_most_commonly_used_terms(self):
+            pass
+
+        def update_term(self, old_term, new_term, url):
+            pass
+
+        def update_url(self, term, new_url):
+            pass
+
         def init_db(self):
             pass
 

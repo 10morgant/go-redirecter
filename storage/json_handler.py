@@ -19,7 +19,7 @@ class JSONHandler(DBHandler):
 
     def save_db(self):
         with open(self.db_path, 'w') as f:
-            json.dump(self.db, f)
+            json.dump(self.db, f, indent=4)
 
     def init_db(self):
         pass
@@ -48,3 +48,14 @@ class JSONHandler(DBHandler):
         terms = [(term, data['usage_count']) for term, data in self.db.items()]
         terms.sort(key=lambda x: x[1], reverse=True)
         return terms[:limit]
+
+    def update_term(self, old_term, new_term, url):
+        if old_term in self.db:
+            self.db[new_term] = self.db.pop(old_term)
+            self.db[new_term]['url'] = url
+            self.save_db()
+
+    def delete_term(self, term):
+        if term in self.db:
+            self.db.pop(term)
+            self.save_db()

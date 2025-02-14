@@ -17,6 +17,23 @@ class MyApp:
         self.app.add_url_rule('/go/<string:term>', 'redirect_to_term', self.redirect_to_term)
         self.app.add_url_rule('/new', 'new_entry', self.new_entry)
         self.app.add_url_rule('/add', 'add_term', self.add_term, methods=['POST'])
+        self.app.add_url_rule('/edit/<string:term>', 'edit_entry', self.edit_entry)
+        self.app.add_url_rule('/update', 'update_term', self.update_term, methods=['POST'])
+
+    def edit_entry(self, term):
+        url = self.db_handler.get_url(term)
+        if url:
+            return render_template("edit_entry.j2.html", term=term, url=url)
+        else:
+            return redirect('/go')
+
+    def update_term(self):
+        old_term = request.form['old_term']
+        new_term = request.form['term']
+        url = request.form['url']
+        print(old_term, new_term, url)
+        self.db_handler.update_term(old_term, new_term, url)
+        return redirect('/go/{}'.format(new_term))
 
     def redirect_to_term(self, term):
         url = self.db_handler.get_url(term)
