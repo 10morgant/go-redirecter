@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, redirect, request, render_template, jsonify
+from flask import Flask, redirect, request, render_template
 
 from storage.db_factory import get_db_handler
 
@@ -16,6 +16,16 @@ class MyApp:
         self.db_type = db_type
         self.db_path = db_path
 
+        app.add_url_rule('/', 'show_terms', self.show_terms)
+        app.add_url_rule('/go/', 'show_terms', self.show_terms)
+        app.add_url_rule('/go/<string:term>', 'redirect_to_term', self.redirect_to_term)
+        app.add_url_rule('/new', 'new_entry', self.new_entry)
+        app.add_url_rule('/add', 'add_term', self.add_term, methods=['POST'])
+        app.add_url_rule('/edit/<string:term>', 'edit_entry', self.edit_entry)
+        app.add_url_rule('/update', 'update_term', self.update_term, methods=['POST'])
+        app.add_url_rule('/delete/<string:term>', 'delete_entry', self.delete_entry)
+        app.add_url_rule('/del', 'delete_term', self.delete_term, methods=['POST'])
+
     @app.errorhandler(404)
     def page_not_found(self):
         return render_template('404.j2.html'), 404
@@ -23,22 +33,17 @@ class MyApp:
     def get_db(self):
         return get_db_handler(self.db_type, self.db_path)
 
-    @app.route('/delete/<string:term>')
     def delete_entry(self, term: str):
         url = self.get_db().get_url(term)
         return render_template("delete_entry.j2.html", term=term, url=url)
 
-    @app.route('/del', methods=['POST'])
     def delete_term(self):
         term = request.form['term']
         url = request.form['url']
-
         print(term, url)
-
         self.get_db().delete_term(term)
         return redirect('/go')
 
-    @app.route('/edit/<string:term>')
     def edit_entry(self, term: str):
         url = self.get_db().get_url(term)
         if url:
@@ -46,7 +51,6 @@ class MyApp:
         else:
             return redirect('/go')
 
-    @app.route('/update', methods=['POST'])
     def update_term(self):
         old_term = request.form['old_term']
         new_term = request.form['term']
@@ -57,7 +61,6 @@ class MyApp:
         self.get_db().update_term(old_term, new_term, url)
         return redirect('/go/{}'.format(new_term))
 
-    @app.route('/go/<string:term>')
     def redirect_to_term(self, term: str):
         if term in ['go', 'home']:
             return redirect('/go')
@@ -67,19 +70,15 @@ class MyApp:
         else:
             return self.new_entry(term)
 
-    @app.route('/new')
     def new_entry(self, term: str = None):
         return render_template("new_entry.j2.html", term=term)
 
-    @app.route('/add', methods=['POST'])
     def add_term(self):
         term = request.form['term']
         url = request.form['url']
         self.get_db().add_term(term, url)
         return redirect('/go/{}'.format(term))
 
-    @app.route('/')
-    @app.route('/go')
     def show_terms(self):
         newly_added_terms = [
             (term, created_at)
