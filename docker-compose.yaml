@@ -1,0 +1,16 @@
+services:
+  goto:
+    build: .
+    restart: always
+    ports:
+      - "8000:5000"
+# uncomment the following lines to add a redis container
+#    environment:
+#      - DB_TYPE=redis
+#      - DB_PATH=redis://redis:6379/0
+#    depends_on:
+#      - redis
+#  redis:
+#    image: "redis:latest"
+#    ports:
+#      - "6379:6379"

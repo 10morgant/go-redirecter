@@ -14,6 +14,7 @@ class MyApp:
         self.db_type = db_type
         self.db_path = db_path
 
+        app.add_url_rule('/', 'show_terms', self.show_terms)
         app.add_url_rule('/go/', 'show_terms', self.show_terms)
         app.add_url_rule('/go/<string:term>', 'redirect_to_term', self.redirect_to_term)
         app.add_url_rule('/new', 'new_entry', self.new_entry)
@@ -103,7 +104,7 @@ if __name__ == '__main__':
                         help='Run the app in debug mode')
     parser.add_argument('--db-type', type=str, choices=['sqlite', 'json', 'redis'],
                         default=os.getenv('DB_TYPE', 'sqlite'), help='Database type to use')
-    parser.add_argument('--db-path', type=str, default=os.getenv('DB_TYPE', 'terms.db'), help='Path to the database file')
+    parser.add_argument('--db-path', type=str, default=os.getenv('DB_PATH', 'terms.db'), help='Path to the database file')
 
     args = parser.parse_args()
 
