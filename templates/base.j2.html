@@ -5,9 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Terms{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/flowbite.min.css') }}">
+    <link
+            rel="search"
+            type="application/opensearchdescription+xml"
+            title="GO: By go"
+            href="{{ url_for('static', filename="go.xml") }}"/>
+
+<style>
+    .bg-my-primary{
+        background-color: #8d5e87;
+    }
+    .text-my-primary{
+        color: #805e8d;
+    }
+</style>
 </head>
 <body class="bg-gray-100">
-<nav class="bg-blue-500 p-4 mb-6">
+<nav class="bg-my-primary p-4 mb-6">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
         <div class="flex space-x-4">
             <a href="/go" class="text-white text-2xl font-bold">GO</a>

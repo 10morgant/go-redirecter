@@ -19,6 +19,19 @@ class MyApp:
         self.app.add_url_rule('/add', 'add_term', self.add_term, methods=['POST'])
         self.app.add_url_rule('/edit/<string:term>', 'edit_entry', self.edit_entry)
         self.app.add_url_rule('/update', 'update_term', self.update_term, methods=['POST'])
+        self.app.add_url_rule('/delete/<string:term>', 'delete_entry', self.delete_entry)
+        self.app.add_url_rule('/del', 'delete_term', self.delete_term, methods=['POST'])
+
+    def delete_entry(self, term):
+        url = self.db_handler.get_url(term)
+        return render_template("delete_entry.j2.html", term=term, url=url)
+
+    def delete_term(self):
+        term = request.form['term']
+        url = request.form['url']
+        print(term, url)
+        self.db_handler.delete_term(term)
+        return redirect('/go')
 
     def edit_entry(self, term):
         url = self.db_handler.get_url(term)

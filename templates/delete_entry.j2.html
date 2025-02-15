@@ -1,0 +1,30 @@
+{% extends "base.j2.html" %}
+
+{% block title %}Edit Entry{% endblock %}
+
+{% block body %}
+
+    <div class="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-lg mb-6">
+        {% if not url %}
+            <div class="bg-red-500 text-white p-4 rounded-lg mb-4">
+                <p>Term "{{ term }}" not found.</p>
+            </div>
+        {% else %}
+            <h2 class="text-2xl font-bold mb-4 text-center">Delete Term</h2>
+            <form action="/del" method="post" class="max-w-md mx-auto">
+                <div class="mb-4">
+                    <label for="term" class="block text-sm font-medium text-gray-700">{{ term }}</label>
+                    <input type="hidden" name="term" id="term" class="block w-full p-2 border border-gray-300 rounded-lg"
+                           value="{{ term }}" required>
+                </div>
+                <div class="mb-4">
+                    <label for="url" class="block text-sm font-medium text-gray-700">{{ url }}</label>
+                    <input type="hidden" name="url" id="url" class="block w-full p-2 border border-gray-300 rounded-lg"
+                           value="{{ url }}" required>
+                </div>
+                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700">Delete
+                </button>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}
