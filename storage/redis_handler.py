@@ -68,10 +68,10 @@ if redis_available:
             self.add_term(new_term, url)
 else:
     class RedisHandler(DBHandler):
-        def get_newly_added_terms(self):
+        def get_newly_added_terms(self, limit=10):
             pass
 
-        def get_most_commonly_used_terms(self):
+        def get_most_commonly_used_terms(self, limit=10):
             pass
 
         def update_term(self, old_term, new_term, url):
