@@ -21,13 +21,13 @@ To go to a website, simply type `goto <alias>` in the address bar.
 2. Add a new search engine with the following values:
    - Search engine: `GoTo`
    - Keyword: `goto`
-   - URL: `http://localhost:8000/goto/%s`
+   - URL: `http://localhost:8600/goto/%s`
 
 ![Example Image](img/add_to_chrome.png)
 
 ### Add to Firefox
 
-1. Navigate to the go home page: `localhost:8000`
+1. Navigate to the go home page: `localhost:8600`
 2. Right-click on the address bar and select `Add GO: by go`
 
 ![Example Image](img/add_to_firefox.png)
@@ -39,9 +39,20 @@ To go to a website, simply type `goto <alias>` in the address bar.
 
 ### Docker
 
+#### IF YOU WANT TO CHANGE THE PORT THEN IT NEEDS TO BE UPDATED IN `static/go.xml` TO ALLOW THE SEARCH ENGINE TO WORK
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+	<ShortName>go</ShortName>
+	<Description>GO Search quick</Description>
+	<Url type="text/html" template="http://0.0.0.0:8600/go/{searchTerms}" />
+</OpenSearchDescription>
+```
+
 ```bash
 docker build -t goto .
-docker run -d -p 8000:5000 --name goto --restart always goto 
+docker run -d -p 8600:5000 --name goto --restart always goto 
 ```
 
 ### Docker compose
@@ -52,7 +63,7 @@ services:
     build: .
     restart: always
     ports:
-      - "8000:5000"
+      - "8600:5000"
 # uncomment the following lines to add a redis container
 #    environment:
 #      - DB_TYPE=redis

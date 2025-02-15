@@ -11,9 +11,13 @@ COPY requirements.txt .
 
 # Install the dependencies
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install gunicorn
 
 # Copy the rest of the application code
 COPY . .
+
+# Copy the entrypoint script
+COPY entrypoint.sh .
 
 # Set the ownership of the application code to the non-root user
 RUN chown -R appuser:appuser /app
@@ -21,5 +25,5 @@ RUN chown -R appuser:appuser /app
 # Change to the non-root user
 USER appuser
 
-# Command to run the application
-CMD ["python", "app.py"]
+# Command to run the entrypoint script
+ENTRYPOINT ["./entrypoint.sh"]

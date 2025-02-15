@@ -2,5 +2,5 @@
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
 	<ShortName>go</ShortName>
 	<Description>GO Search quick</Description>
-	<Url type="text/html" template="http://127.0.0.1:5000/go/{searchTerms}" />
+	<Url type="text/html" template="http://0.0.0.0:8600/go/{searchTerms}" />
 </OpenSearchDescription>

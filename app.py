@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, redirect, request, render_template
 
 from storage.db_factory import get_db_handler
@@ -93,20 +95,19 @@ class MyApp:
         app.run(host=self.host, port=self.port, debug=self.debug)
 
 
+host = os.getenv('FLASK_HOST', '0.0.0.0')
+port = os.getenv('FLASK_PORT', 5000)
+debug = os.getenv('FLASK_DEBUG', 'false').lower() == 'true'
+db_type = os.getenv('DB_TYPE', 'sqlite')
+db_path = os.getenv('DB_PATH', 'terms.db')
+
+print("HOST: ", host)
+print("PORT: ", port)
+print("DEBUG: ", debug)
+print("DB_TYPE: ", db_type)
+print("DB_PATH: ", db_path)
+
+my_app = MyApp(host, port, debug, db_type, db_path)
+
 if __name__ == '__main__':
-    import argparse
-    import os
-
-    parser = argparse.ArgumentParser(description='Run the Flask app.')
-    parser.add_argument('--host', type=str, default=os.getenv('FLASK_HOST', '0.0.0.0'), help='Host to run the app on')
-    parser.add_argument('--port', type=int, default=os.getenv('FLASK_PORT', 5000), help='Port to run the app on')
-    parser.add_argument('--debug', action='store_true', default=os.getenv('FLASK_DEBUG', 'false').lower() == 'true',
-                        help='Run the app in debug mode')
-    parser.add_argument('--db-type', type=str, choices=['sqlite', 'json', 'redis'],
-                        default=os.getenv('DB_TYPE', 'sqlite'), help='Database type to use')
-    parser.add_argument('--db-path', type=str, default=os.getenv('DB_PATH', 'terms.db'), help='Path to the database file')
-
-    args = parser.parse_args()
-
-    my_app = MyApp(args.host, args.port, args.debug, args.db_type, args.db_path)
     my_app.run()
