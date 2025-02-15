@@ -9,9 +9,9 @@ A simple go to alias link manager. Simply add as a search engine in Chrome or Fi
 To go to a website, simply type `goto <alias>` in the address bar.
 
 
-![Example Image](img/homepage.png)
+![Example Image](static/img/homepage.png)
 
-![Example Image](img/new_entry.png)
+![Example Image](static/img/new_entry.png)
 
 ## How to use
 
@@ -20,22 +20,22 @@ To go to a website, simply type `goto <alias>` in the address bar.
 1. Go to `chrome://settings/searchEngines`
 2. Add a new search engine with the following values:
    - Search engine: `GoTo`
-   - Keyword: `goto`
+   - Keyword: `go`
    - URL: `http://localhost:8600/goto/%s`
 
-![Example Image](img/add_to_chrome.png)
+![Example Image](static/img/add_to_chrome.png)
 
 ### Add to Firefox
 
 1. Navigate to the go home page: `localhost:8600`
 2. Right-click on the address bar and select `Add GO: by go`
 
-![Example Image](img/add_to_firefox.png)
+![Example Image](static/img/add_to_firefox.png)
 
 3. Then go to `about:preferences#search`
 4. Add a keyword for the search engine
 
-![Example Image](img/add_keyword.png)
+![Example Image](static/img/add_keyword.png)
 
 ### Docker
 

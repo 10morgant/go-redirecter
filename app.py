@@ -25,6 +25,7 @@ class MyApp:
         app.add_url_rule('/update', 'update_term', self.update_term, methods=['POST'])
         app.add_url_rule('/delete/<string:term>', 'delete_entry', self.delete_entry)
         app.add_url_rule('/del', 'delete_term', self.delete_term, methods=['POST'])
+        app.add_url_rule('/help', 'help', self.help)
 
     @app.errorhandler(404)
     def page_not_found(self):
@@ -95,6 +96,9 @@ class MyApp:
             newly_added_terms=newly_added_terms,
             most_commonly_used_terms=most_commonly_used_terms
         )
+
+    def help(self):
+        return render_template("help.j2.html")
 
     def run(self):
         app.run(host=self.host, port=self.port, debug=self.debug)

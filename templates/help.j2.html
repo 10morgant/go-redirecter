@@ -1,0 +1,66 @@
+{% extends "base.j2.html" %}
+
+{% block body %}
+    <div class="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-lg mb-6">
+        <div class="container mx-auto p-4">
+            <h1 class="text-2xl font-bold mb-4">Help: Adding the URL</h1>
+            <div class="tabs">
+                <ul class="flex border-b">
+                    <li class="-mb-px mr-1">
+                        <a class="bg-white inline-block py-2 px-4 text-blue-500 hover:text-blue-800 font-semibold"
+                           href="#firefox">Firefox</a>
+                    </li>
+                    <li class="mr-1">
+                        <a class="bg-white inline-block py-2 px-4 text-blue-500 hover:text-blue-800 font-semibold"
+                           href="#chrome">Chrome</a>
+                    </li>
+                </ul>
+                <div id="firefox" class="tab-content">
+                    <h2 class="text-xl font-semibold mt-4">Firefox</h2>
+                    <p>Follow these steps to add the URL in Firefox:</p>
+                    <ol class="list-decimal list-inside">
+                        <li>Click on the menu button and select <strong>Preferences</strong>.</li>
+                        <li>Go to the <strong>Search</strong> section.</li>
+                        <li>Click on <strong>Add search engine</strong>.</li>
+                        <li>Enter the URL and click <strong>Add</strong>.</li>
+                    </ol>
+                    <img src="/static/img/add_to_firefox.png" alt="Add to Firefox" class="my-4">
+                    <img src="/static/img/add_keyword.png" alt="Add Keyword" class="my-4">
+                </div>
+                <div id="chrome" class="tab-content hidden">
+                    <h2 class="text-xl font-semibold mt-4">Chrome</h2>
+                    <p>Follow these steps to add the URL in Chrome:</p>
+                    <ol class="list-decimal list-inside">
+                        <li>Click on the menu button and select <strong>Settings</strong>.</li>
+                        <li>Go to the <strong>Search engine</strong> section.</li>
+                        <li>Click on <strong>Manage search engines</strong>.</li>
+                        <li>Click on <strong>Add</strong> and enter the URL.</li>
+                    </ol>
+                    <img src="/static/img/add_to_chrome.png" alt="Add to Chrome" class="my-4">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.tabs a');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+
+                    tabContents.forEach(content => content.classList.add('hidden'));
+                    target.classList.remove('hidden');
+
+                    tabs.forEach(t => t.classList.remove('text-blue-800'));
+                    this.classList.add('text-blue-800');
+                });
+            });
+        });
+    </script>
+{% endblock %}
