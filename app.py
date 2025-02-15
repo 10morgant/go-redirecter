@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 
 class MyApp:
-    def __init__(self, host, port, debug, db_type, db_path):
+    def __init__(self, host: str, port: int, debug: bool, db_type: str, db_path: str):
         self.db_handler = get_db_handler(db_type, db_path)
         self.host = host
         self.port = port
@@ -33,18 +33,20 @@ class MyApp:
     def get_db(self):
         return get_db_handler(self.db_type, self.db_path)
 
-    def delete_entry(self, term):
+    def delete_entry(self, term: str):
         url = self.get_db().get_url(term)
         return render_template("delete_entry.j2.html", term=term, url=url)
 
     def delete_term(self):
         term = request.form['term']
         url = request.form['url']
+
         print(term, url)
+
         self.get_db().delete_term(term)
         return redirect('/go')
 
-    def edit_entry(self, term):
+    def edit_entry(self, term: str):
         url = self.get_db().get_url(term)
         if url:
             return render_template("edit_entry.j2.html", term=term, url=url)
@@ -55,11 +57,13 @@ class MyApp:
         old_term = request.form['old_term']
         new_term = request.form['term']
         url = request.form['url']
+
         print(old_term, new_term, url)
+
         self.get_db().update_term(old_term, new_term, url)
         return redirect('/go/{}'.format(new_term))
 
-    def redirect_to_term(self, term):
+    def redirect_to_term(self, term:str):
         if term in ['go', 'home']:
             return redirect('/go')
         url = self.get_db().get_url(term)
@@ -68,7 +72,7 @@ class MyApp:
         else:
             return self.new_entry(term)
 
-    def new_entry(self, term=None):
+    def new_entry(self, term: str = None):
         return render_template("new_entry.j2.html", term=term)
 
     def add_term(self):
@@ -88,8 +92,11 @@ class MyApp:
             for term, usage_count in self.get_db().get_most_commonly_used_terms(5)
             if term
         ]
-        return render_template("terms.j2.html", newly_added_terms=newly_added_terms,
-                               most_commonly_used_terms=most_commonly_used_terms)
+        return render_template(
+            "terms.j2.html",
+            newly_added_terms=newly_added_terms,
+            most_commonly_used_terms=most_commonly_used_terms
+        )
 
     def run(self):
         app.run(host=self.host, port=self.port, debug=self.debug)
