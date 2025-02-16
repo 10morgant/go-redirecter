@@ -16,6 +16,8 @@ class MyApp:
         self.db_type = db_type
         self.db_path = db_path
 
+        self.db_handler.init_db()
+
         app.add_url_rule('/', 'show_terms', self.show_terms)
         app.add_url_rule('/go/', 'show_terms', self.show_terms)
         app.add_url_rule('/go/<string:term>', 'redirect_to_term', self.redirect_to_term)
